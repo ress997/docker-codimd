@@ -1,0 +1,35 @@
+version: '3'
+services:
+
+  db:
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=hackmd
+      - POSTGRES_PASSWORD=hackmdpass
+      - POSTGRES_DB=hackmd
+    networks:
+      - back
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+
+  app:
+    image: hackmdio/hackmd:alpine
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - TZ=Japan
+      - HMD_DB_URL=postgres://hackmd:hackmdpass@db:5432/hackmd
+    networks:
+      - front
+      - back
+    ports:
+      - "127.0.0.1:3000:3000"
+
+networks:
+  front:
+  back:
+    internal: true
