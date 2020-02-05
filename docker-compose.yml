@@ -16,7 +16,7 @@ services:
       - ./postgres:/var/lib/postgresql/data
 
   app:
-    image: hackmdio/hackmd:alpine
+    image: quay.io/codimd/server:1.5.0-alpine
     restart: always
     depends_on:
       - db
