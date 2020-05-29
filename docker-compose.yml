@@ -5,9 +5,9 @@ services:
     image: postgres:12-alpine
     restart: always
     environment:
-      - POSTGRES_USER=hackmd
+      - POSTGRES_USER=codimd
       - POSTGRES_PASSWORD=hackmdpass
-      - POSTGRES_DB=hackmd
+      - POSTGRES_DB=codimd
     networks:
       - back
     healthcheck:
@@ -16,13 +16,12 @@ services:
       - ./postgres:/var/lib/postgresql/data
 
   app:
-    image: quay.io/codimd/server:1.5.0-alpine
+    image: quay.io/codimd/server:1-alpine
     restart: always
     depends_on:
       - db
     environment:
-      - TZ=Japan
-      - HMD_DB_URL=postgres://hackmd:hackmdpass@db:5432/hackmd
+      - CMD_DB_URL=postgres://codimd:hackmdpass@db:5432/codimd
     networks:
       - front
       - back
